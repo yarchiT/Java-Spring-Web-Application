@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+    <title>URls Service Check</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+   <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/urlSend.js"></script>
+
+</head>
+<body>
+
+    <div id="header">
+        <h1> Website Availability Test</h1>
+    </div>
+        <div id="test">
+            <span>I want to test</span>
+            <div id="input">
+                 <input id="inputURL" type="url" pattern="https?://.+" required placeholder="www.mydomain.com"/>
+            </div>
+                <button id="testButton" onclick="post()">Start test</button>
+        </div>
+
+    <div id="result">
+        <h1>Result</h1>
+        <span></span>
+        <table id="contentTable" style="width:50%">
+            <tr>
+                <th>URL</th>
+                <th>Status</th>
+                <th>On/Off</th>
+            </tr>
+        </table>
+
+    </div>
+    <audio src="sounds/error.wav" id="audioErr" class="audio"></audio>
+    <audio src="sounds/warning.wav" id="audioWarn" class="audio"></audio>
+</body>
+</html>

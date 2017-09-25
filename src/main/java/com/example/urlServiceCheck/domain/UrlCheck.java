@@ -1,19 +1,34 @@
-package com.example.urlServiceCheck.service;
+package com.example.urlServiceCheck.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-// service application package
-// TODO WEB, Service and persistence packages under hello
-// TODO js client to send request and make timer every 5 sec and GET to the controller
-// TODO download postman and s
+
+@Entity
 public class UrlCheck {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+
     private String urlS;
     private int responseCode;
 
+    public UrlCheck(){}
+
+    public UrlCheck(String url){
+        this.urlS= url;
+    }
+
+    public UrlCheck(String url, int responseCode){
+        this.urlS=url;
+        this.responseCode = responseCode;
+    }
 
     public String getUrlS() {
         return urlS;
@@ -23,12 +38,8 @@ public class UrlCheck {
         this.urlS = urlS;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public int getResponseCode() {
@@ -39,18 +50,24 @@ public class UrlCheck {
         this.responseCode = responseCode;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "Url[url=%s, code='%d']",
+                urlS,responseCode);
+    }
 
-    public boolean pingURL(String url, int timeout) {
-        url = url.replaceFirst("^https", "http"); // Otherwise an exception may be thrown on invalid SSL certificates.
+
+    public int pingURL(String url, int timeout) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setConnectTimeout(timeout);
             connection.setReadTimeout(timeout);
             connection.setRequestMethod("HEAD");
             responseCode = connection.getResponseCode();
-            return (200 <= responseCode && responseCode <= 399);
         } catch (IOException exception) {
-            return false;
+            exception.printStackTrace();
         }
+        return responseCode;
     }
 }
