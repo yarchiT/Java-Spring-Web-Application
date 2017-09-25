@@ -1,13 +1,14 @@
 package com.example.urlServiceCheck.domain;
 
 
-import com.example.urlServiceCheck.domain.UrlCheck;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UrlCheckRepository extends JpaRepository<UrlCheck, Long> {
+public interface UrlCheckRepository extends JpaRepository<UrlCheck, String> {
 
-   // List<UrlCheck> findByCode(int responseCode);
+    List<UrlCheck> findByResponseCode(int responseCode);
+
+   // UrlCheck findOne(String urlString);
 }
 

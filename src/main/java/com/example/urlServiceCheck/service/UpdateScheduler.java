@@ -7,27 +7,26 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UpdateStatus {
+public class UpdateScheduler {
 
+    private final PingService pingService;
     private final UrlCheckRepository repository;
 
     @Autowired
-    public UpdateStatus(UrlCheckRepository repository) {
+    public UpdateScheduler(UrlCheckRepository repository, PingService pingService) {
         this.repository = repository;
+        this.pingService = pingService;
     }
 
     @Scheduled(fixedRate = 5000)
-    public void updateStatus(){
-       int oldResponseCode;
-
+    public void updateStatus() {
         for (UrlCheck url : repository.findAll()) {
-            oldResponseCode= url.getResponseCode();
-            url.pingURL(url.getUrlS(), 5000);
-
-            if(oldResponseCode!= url.getResponseCode())
+            int responseCode = pingService.pingURL(url.getUrlString(), 5000);
+            if (url.getResponseCode() != responseCode) {
+                url.setResponseCode(responseCode);
                 repository.save(url);
+            }
         }
+
     }
-
-
 }

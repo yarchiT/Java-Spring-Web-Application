@@ -8,7 +8,7 @@ function post () {
     if(!validateUrl(inputUrl.value)){
         alert("Your url is Invalid");
     }else{
-        var data = {"urlS": inputUrl.value};
+        var data = {"urlString": inputUrl.value};
         inputUrl.value="";
 
         // construct an HTTP request
@@ -32,6 +32,7 @@ function get(){
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             myList = JSON.parse(this.responseText);
+            console.log(myList);
             fillTable();
         }
     };
@@ -76,7 +77,7 @@ function fillTable(){
             url.innerHTML = "Temporary not checking";
             status.innerHTML = "~";
         }else{
-            url.innerHTML = myList[i].urlS;
+            url.innerHTML = myList[i].urlString;
             addStyle("tr"+i, myList[i].responseCode, status);
         }
     }
@@ -155,7 +156,7 @@ function getCheckBox(id) {
     var respCode = document.getElementById("code"+i);
     var tr = document.getElementById("tr"+i);
 
-    var object = {id: i+1, urlS: urlTd.innerHTML, responseCode: respCode.innerHTML};
+    var object = {id: i, urlString: urlTd.innerHTML, responseCode: respCode.innerHTML};
 
     if(checkBox.checked && !containsObject(object, temporaryUnusedList)){
         temporaryUnusedList.push(object);
@@ -163,7 +164,7 @@ function getCheckBox(id) {
     }else{
 
         temporaryUnusedList = temporaryUnusedList.filter(function(el) {
-            return el.id !== i+1;
+            return el.id !== i;
         });
         tr.removeAttribute("class");
     }
@@ -173,7 +174,7 @@ function containsObject(obj, list) {
     var res = false;
     list.forEach( function (arrayItem)
     {
-        if( arrayItem.id == obj.id)
+        if( arrayItem.urlString === obj.urlString);
         res=true;
     });
     return res;
